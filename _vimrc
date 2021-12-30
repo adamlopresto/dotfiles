@@ -2,7 +2,11 @@
 
 " options {{{
 set noundofile nobackup nowritebackup number
-set guifont=JetBrains_Mono:h10:cANSI:qDRAFT
+if has("win32")
+    set guifont=JetBrains_Mono:h10:cANSI:qDRAFT
+else
+    set guifont=JetBrains\ Mono\ 10
+endif
 "set guifont=Consolas:h11:cANSI:qDRAFT
 
 syn on
@@ -39,6 +43,8 @@ if !has('nvim')
     set renderoptions=type:directx
 endif
 
+set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~
+
 "set viminfo+=rC:\\Users\\alopresto\\AppData\\Local\\Temp
 set viminfo+=r~\\AppData\\Local\\Temp
 
@@ -46,7 +52,6 @@ set viminfo+=r~\\AppData\\Local\\Temp
 " set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
 " set shellpipe=|
 " set shellredir=>
-
 " }}}
 
 " Plugin independent mappings {{{
@@ -113,7 +118,7 @@ let g:surround_no_mappings = 1
 " }}}
 
 " plugins {{{
-call plug#begin('~\vimfiles\plugged')
+call plug#begin('~/vimfiles/plugged')
 
 " Plug 'wellle/context.vim'
 " Plug 'vim-scripts/dbext.vim'
@@ -273,8 +278,10 @@ command! -range=% -bang WikiCleanup <line1>,<line2>call WikiCleanup(<bang>0)
 
 nnoremap <F4> :WikiCleanup!<cr>
 
-"Start maximized
-au GUIEnter * simalt ~x
+if has('win32')
+    "Start maximized
+    au GUIEnter * simalt ~x
+endif
 
 " Change to relative line numbers in normal mode and in insert mode use absolute line numbers
 augroup numbertoggle
@@ -283,8 +290,8 @@ augroup numbertoggle
     autocmd BufLeave,FocusLost,InsertEnter   * setlocal norelativenumber
 augroup END
 
-augroup AutoSaveFolds
-  autocmd!
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent loadview
-augroup END
+"augroup AutoSaveFolds
+"  autocmd!
+"  autocmd BufWinLeave * mkview
+"  autocmd BufWinEnter * silent loadview
+"augroup END
