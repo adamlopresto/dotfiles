@@ -43,7 +43,9 @@ if !has('nvim')
     set renderoptions=type:directx
 endif
 
-set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~
+if has('unix')
+    set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~}
+endif
 
 "set viminfo+=rC:\\Users\\alopresto\\AppData\\Local\\Temp
 set viminfo+=r~\\AppData\\Local\\Temp
