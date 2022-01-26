@@ -101,8 +101,14 @@ onoremap al :silent normal val<CR>
 xnoremap i% GoggV
 onoremap i% :silent normal vi%<CR>
 
-nnoremap S q:i%s//g<Left><Left>
-vnoremap <leader>S :s/\%V\%V//g<Left><Left><Left><Left><Left><Left>
+" last change pseudo-text objects
+" " ik ak
+xnoremap ik `]o`[
+onoremap ik :<C-u>normal vik<CR>
+onoremap ak :<C-u>normal vikV<CR>
+
+nnoremap <leader>s q:i%s//g<Left><Left>
+vnoremap <leader>s :s/\%V\%V//g<Left><Left><Left><Left><Left><Left>
 
 cnoremap <expr> / getcmdline()[getcmdpos()-1:getcmdpos()+2] ==# '\%V/' ? "<Right><Right><Right><Right>" : "/"
 
@@ -151,8 +157,10 @@ Plug 'tpope/vim-repeat'
 Plug 'machakann/vim-sandwich'
 Plug 'tpope/vim-sensible'
 " Plug 'mhinz/vim-signify'
+Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-speeddating'
+" Reorder function arguments &c
 Plug 'kurkale6ka/vim-swap'
 Plug 'kana/vim-textobj-user'
 Plug 'glts/vim-textobj-comment'
@@ -196,6 +204,11 @@ let g:peekaboo_special=['"','+', '-']
 runtime macros/sandwich/keymap/surround.vim
 " But I use vim-surround's ds until sandwich fixes https://github.com/machakann/vim-sandwich/issues/107
 nmap ds  <Plug>Dsurround
+
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
 
 " VimWiki, Zettel {{{
 let g:vimwiki_list = [{'path': '~/Google Drive/vimwiki', 'auto_toc': 1, 'syntax': 'markdown', 'ext': '.md'}]
