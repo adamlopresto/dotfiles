@@ -31,6 +31,7 @@ set smartcase
 set incsearch
 set relativenumber
 set showmatch
+set directory=~/vimfiles/swap,C:\Users\ALOPRE~3\AppData\Local\Temp,c:\tmp,c:\temp
 set scrolloff=5
 
 set linebreak
@@ -38,6 +39,9 @@ set showbreak=>>>\
 " set showbreak=↳    " some sort of rendering issue
 set breakindent
 " consider breakindentopt
+
+set mouse=a
+set startofline
 
 if !has('nvim')
     set renderoptions=type:directx
@@ -48,12 +52,13 @@ if has('unix')
 endif
 
 "set viminfo+=rC:\\Users\\alopresto\\AppData\\Local\\Temp
-set viminfo+=r~\\AppData\\Local\\Temp
+" set viminfo+=r~\\AppData\\Local\\Temp
 
 " set shell=powershell.exe
 " set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
 " set shellpipe=|
 " set shellredir=>
+
 " }}}
 
 " Plugin independent mappings {{{
@@ -293,6 +298,8 @@ command! -range=% -bang WikiCleanup <line1>,<line2>call WikiCleanup(<bang>0)
 
 nnoremap <F4> :WikiCleanup!<cr>
 
+nmap <expr> <C-Y>w "vit<C-Y>,a[https://en.wikipedia.org/wiki/".expand("<cword>")."]<CR>"
+
 if has('win32')
     "Start maximized
     au GUIEnter * simalt ~x
@@ -305,8 +312,29 @@ augroup numbertoggle
     autocmd BufLeave,FocusLost,InsertEnter   * setlocal norelativenumber
 augroup END
 
+
 "augroup AutoSaveFolds
 "  autocmd!
 "  autocmd BufWinLeave * mkview
 "  autocmd BufWinEnter * silent loadview
 "augroup END
+
+if has('nvim')
+    augroup FixNeoVimAutoRead
+        autocmd!
+        autocmd FocusGained * silent checktime
+    augroup END
+endif
+
+func! FoldIndent() abort
+    let indent = indent(v:lnum)/&sw
+    let indent_next = indent(nextnonblank(v:lnum+1))/&sw
+    if indent_next > indent && getline(v:lnum) !~ '^\s*$'
+        return ">" . (indent+1)
+    elseif indent != 0
+        return indent
+    else 
+        return -1
+    endif
+endfunc
+
